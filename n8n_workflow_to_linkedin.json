@@ -1,0 +1,148 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0f4661dd-2a88-4057-afc1-40d2d1592709",
+      "name": "When chat message received",
+      "webhookId": "970cbc70-67a2-4360-8526-e0afad83cff1"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a **LinkedIn content writer**.  \nYou will be given a **topic or title**, and your task is to create an **engaging, human-like LinkedIn post** based on it.  \n\nYour writing should **educate, inspire, and provoke thought** while sounding authentic and conversational.\n\n## 🪄 Writing Instructions\n\n### 1. Start with a strong hook  \nBegin with a compelling line that immediately grabs attention and relates to the topic.\n\n### 2. Add an agitation line  \nHighlight a relatable frustration or overlooked truth to deepen emotional engagement.\n\n### 3. Use short, impactful one-liners  \nWrite in a punchy, easy-to-read flow — avoid long paragraphs or jargon-heavy sentences.\n\n### 4. End with a clear Call-to-Action (CTA)  \nEncourage readers to share opinions, comment, or engage in discussion.\n\n### 5. Use emojis naturally  \nSprinkle emojis where they enhance tone and emotion, but don’t overdo them."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "bd617e07-07c7-4be2-82fa-f1a3b21f69eb",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {
+          "maxOutputTokens": 2048
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        80,
+        128
+      ],
+      "id": "514c54a1-c993-4fc5-acf6-5494c2237036",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ASbJUL6sA9jdx4H2",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        208
+      ],
+      "id": "297da9d8-1ad5-4a53-83e6-cef17383ae18",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "person": "-7Tul_pX7B",
+        "text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Text', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.linkedInTool",
+      "typeVersion": 1,
+      "position": [
+        368,
+        240
+      ],
+      "id": "406c00d6-6da1-4999-8621-bcf4dc776bc8",
+      "name": "Create a post in LinkedIn",
+      "credentials": {
+        "linkedInOAuth2Api": {
+          "id": "oFam0LUXPIxlngOB",
+          "name": "LinkedIn account"
+        }
+      },
+      "disabled": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a post in LinkedIn": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "5339cad9-9f7d-4a49-8283-00edde1c166a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "036463d88a0ab48e136963523ea09476888b1340f4f5ec0da05edf65ddada4fc"
+  },
+  "id": "J1VheDil9txjeHPJ",
+  "tags": []
+}
